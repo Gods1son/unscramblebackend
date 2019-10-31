@@ -1,0 +1,117 @@
+<html>
+    <head>
+      <title> Real Time Chat </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="style.css" />
+	    <style>
+	#menuBar{
+		background-color:Aqua;
+		height:30px;
+		width:auto;
+		padding-top:10px;
+		padding-left:10px;
+		}
+	
+	#createRoomContainer {
+		border:2px solid navy;
+		margin:10px auto;
+		padding:10px;
+		display:none;
+		}
+
+	#joinRoomContainer {
+		margin:10px auto;
+		border:2px solid blue;
+		padding:10px;
+		display:none;
+		}
+		
+	#roomUsers, #scoreContainer {
+		margin:10px 0;
+		border:4px solid gold;
+		padding:10px;
+		width:250px;
+		float:left;
+		height:250px;
+		overflow:scroll;
+		}
+	
+	#enterWord {
+		margin:10px 0 10px 5px;
+		border:4px solid yellow;
+		padding:10px;
+		width:300px;
+		float:left;
+		height:250px;
+		}
+		
+	#allWords {
+		margin:10px 0 10px 5px;
+		border:4px groove wheat;
+		padding:10px;
+		width:auto;
+		float:left;
+		height:250px;
+		overflow:scroll;
+		}
+	#wordsNew{
+		 line-height:1.em;
+		list-style-type: none;
+		 }
+</style>
+    </head>
+    <body>
+   <h2 style="text-align:center;">Welcome to online shuffling game</h2>
+<div id="menuBar">
+<input type="button" value="Create New Room" id="createRoom" onclick="showCreateRoom()"/>
+<input type="button" value="Join Room" id="joinRoom" onclick="showJoinRoom()"/>
+</div>
+
+<div id="createRoomContainer">
+<b>Create Room</b><br>
+Enter Room Name: <input type="text" id="createRoomName"> <input type="button" value="Create Room" id="createRoomAction" onclick="createRoom()">
+</div>
+
+<div id="joinRoomContainer">
+<b>Join Room</b><br>
+Enter Room Name: <input type="text" id="joinRoomName"> <input type="button" value="Join Room" id="joinRoomAction" onclick="joinRoom()">
+</div>
+
+<div id="roomUsers">
+<span style="-webkit-margin-start:4.2em;"><b>People in Room</b></span>
+	<div id="users"></div>
+</div>
+
+<div id="enterWord">
+<span><b>Send Word</b></span><br>
+<input type="text" placeholder="Word to shuffle" id="wordToShuffle"><input type="button" value="Shuffle & Send" id="shuffleSend" onclick="sendWord()" class="sendButton"><br><br>
+
+<span><b>Guess Word</b></span><br>
+<input type="text" placeholder="Guess Word" id="myGuess"><input type="button" value="Guess Word" id="checkGuess" onclick="sendGuess()" class="sendButton"><br><br>
+	
+<span><b>Chat below</b></span><br>
+<input type="text" placeholder="Send Message" id="myHint"><input type="button" value="Chat" id="provideHint" onclick="giveHint()" class="sendButton"><br><br>
+
+<i>U don't know the answer</i> <input type="button" value="Pass" onclick="ipass()">
+	
+<input type="hidden" id="roomNameStore" value="">
+</div>
+	    
+<div id="scoreContainer">
+<span style="-webkit-margin-start:4.2em;"><b>Scoreboard</b></span>
+	<div id="scores"></div>
+</div>
+	    
+<div id="allWords">
+<span><b>All the words come here</b></span><br>
+	<ul id="wordsNew"></ul>
+</div>
+	<script type="text/javascript" src="typo/typo.js"></script>
+	    
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+        <script src="/socket.io/socket.io.js"></script>
+
+        <script src="client.js"></script>
+    </body>
+ </html>

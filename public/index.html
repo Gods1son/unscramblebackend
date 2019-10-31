@@ -1,0 +1,298 @@
+<!DOCHTML>
+<html>
+<head>
+		<title> Shuffling game </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script type="text/javascript" src="typo/typo.js"></script>	    
+        <!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="client.js"></script>
+	<script>
+		function testData(){
+		$.get( "/getvar", function( data ) {
+ 			 var datat = data;
+			});
+		}
+		function hideNoty(){
+			$("#notyIcon").hide();
+		}
+	
+	</script>
+	<style>
+	.imgCenter
+	{
+		width: 50%;
+		margin-top: 40px;
+		margin-right: auto;
+		margin-left: auto;	
+	}
+	.scoreboard
+	{
+		margin-top: 10px;
+		border: 2px dashed darkred;	
+		background: lavender;
+	}
+	.allWords
+	{
+		 border: 1px ridge darkgoldenrod;	
+		 height: 50vh;
+		 overflow: auto;
+	}
+	.gameControls
+	{
+		 border: 1px ridge burlywood;	
+		 height: 50vh;
+	}
+	.whitefont
+	{
+		color:White;	
+	}
+	.colorHeader{
+		font-weight:600;
+		color:Navy;
+	}
+	.modal-body{
+		font-size:1.4em;
+	}
+	.welcomeName{
+		margin-left: 10px;
+		color: crimson;
+		font-weight: 700;
+	}
+	#scores{
+		display:flex;
+		font-size: 1.2em;
+		color: darkblue;
+		font-weight: 700;
+	}
+	#scores span{
+		margin-right:15px;	
+	}
+	</style>
+</head>
+<body>
+
+
+  <!-- Fixed navbar -->
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Scrambling Game</a>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#" data-toggle="modal" data-target="#createRoomModal">Create Room</a></li>
+          <li><a href="#" data-toggle="modal" data-target="#joinRoomModal">Join Room</a></li>
+         <!-- <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Nav header</li>
+              <li><a href="#">Separated link</a></li>
+              <li><a href="#">One more separated link</a></li>
+            </ul>
+          </li>-->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+
+  
+  <!--carousel-->
+  
+      <div id="myCarousel1" class="carousel slide">
+        <div class="carousel-inner" style="height:40vh;">
+            <div class="item active">
+                <img src="http://www.slate.com/content/dam/slate/blogs/the_slatest/2012/08/30/gop_word_cloud_here_s_a_word_cloud_of_nearly_every_speech_from_the_gop_convention_/1346383740869.png.CROP.rectangle3-large.png" alt="" class="imgCenter img-responsive" style="height:100%;">
+            </div>
+            <div class="item">
+                <img src="https://www.rootreport.com/wp-content/uploads/2016/07/random-word-generator.gif" alt="" class="imgCenter img-responsive" style="height:100%;">
+            </div>
+            <div class="item">
+                <img src="http://www.osmose.com/content/images/Safety%20word%20jumble%202.jpg" alt="" class="imgCenter img-responsive" style="height:100%;">
+            </div>
+        </div>
+        <a class="left carousel-control" href="#myCarousel1" data-slide="prev">&lsaquo;</a>
+        <a class="right carousel-control" href="#myCarousel1" data-slide="next">&rsaquo;</a>
+    </div>
+	
+    <!-- /.carousel -->
+    <span>
+		<h4 class="welcomeName" id="userNameIs"></h4>
+	</span>
+	<!--container-->
+	<div class="container">
+		<div class="row">
+		<!--first column for score-->
+			<div class="col-md-12 scoreboard">		
+				<!--row for heading-->
+				<div class="row">
+					<div class="col-md-12">
+						<h4 style="text-align:center;margin-top:2px;font-weight:600;">SCOREBOARD</h4>
+						
+					</div>
+				</div>
+
+				<!--row for main board-->
+				<div class="row">
+						<div class="col-md-12">
+							<div id="scoreContainer">
+							<div id="scores"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<!--second column for words-->
+			<div class="col-sm-6 col-md-6 col-lg-6 allWords" id="allWordsHolder">
+				<div class="row">
+					<div class="col-md-12">
+						<h4 style="text-align:center;margin-top:2px;font-weight:600;">ALL WORDS</h4>
+					</div>
+				</div>
+
+				<!--row for main words-->
+				<div class="row">
+					<div class="col-md-12">
+						<div id="allWords">
+							<ul id="wordsNew"></ul>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--third column for tabs-->
+			<div class="col-sm-6 col-md-6 col-lg-6 gameControls">
+				<div class="row">
+					<div class="col-md-12">
+						  <ul class="nav nav-tabs">
+								<li class="active"><a data-toggle="tab" href="#home">Controllers</a></li>
+								<li><a data-toggle="tab" href="#menu1" onclick="hideNoty()">Room Users <sup><img src="http://editorial.designtaxi.com/news-notificationmemo0710/5.jpg" id="notyIcon" style="width:20px;display:none;"></a></sup></li>
+								<!--<li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+								<li><a data-toggle="tab" href="#menu3">Menu 3</a></li>-->
+							</ul>
+					</div>
+				</div>
+
+				<!--main board for all the other pages-->
+					<div class="row">
+						<div class="col-md-12">
+						
+						  <div class="tab-content">
+								<div id="home" class="tab-pane fade in active">
+									<div id="enterWord">
+										<span><b>Send Word</b></span><br>
+										<input type="text" placeholder="Word to shuffle" id="wordToShuffle"><input type="button" value="Shuffle & Send" id="shuffleSend" onclick="sendWord()" class="sendButton"><br><br>
+
+										<span><b>Guess Word</b></span><br>
+										<input type="text" placeholder="Guess Word" id="myGuess"><input type="button" value="Guess Word" id="checkGuess" onclick="sendGuess()" class="sendButton"><br><br>
+			
+										<span><b>Chat below</b></span><br>
+										<input type="text" placeholder="Send Message" id="myHint"><input type="button" value="Chat" id="provideHint" onclick="giveHint()" class="sendButton"><br><br>
+
+										<i>U don't know the answer</i> <input type="button" value="Pass" onclick="ipass()">
+	
+										<input type="hidden" id="roomNameStore" value="">
+									</div>
+								</div>
+    
+								<div id="menu1" class="tab-pane fade">
+									<div id="roomUsers">
+										<span><b>People in Room</b></span>
+										<div id="users"></div>
+									</div>
+								</div>
+    
+								<div id="menu2" class="tab-pane fade">
+									<h3>Menu 2</h3>
+									<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+								</div>
+    
+								<div id="menu3" class="tab-pane fade">
+									<h3>Menu 3</h3>
+									<p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+								</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--end of container-->
+	
+	<!-- Create Room Modal trigger -->
+<!-- Modal -->
+<div class="modal fade" id="createRoomModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title colorHeader" id="exampleModalLabel">Create New Room</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Enter Room Name: <input type="text" id="createRoomName">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeCreate">Close</button>
+        <button type="button" class="btn btn-primary" id="createRoomAction" onclick="createRoom()">Create Room</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Join Room Modal trigger -->
+<!-- Modal -->
+<div class="modal fade" id="joinRoomModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title colorHeader" id="exampleModalLabel">Join Room</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Enter Room Name: <input type="text" id="joinRoomName">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeJoin">Close</button>
+        <button type="button" class="btn btn-primary" id="joinRoomAction" onclick="joinRoom()">Join Room</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+	<!--footer-->
+	<div class="container navbar-inverse whitefont">
+		<div class="row">
+		<!--first half of footer-->
+			<div class="col-sm-6 col-md-6 col-lg-6">
+				<h3>Scrambling Game</h3>
+			</div>
+
+		<!--second half of footer-->
+		<div class="col-sm-6 col-md-6 col-lg-6" >
+				<p style="margin-top: 7%;text-align: right;">Copyright ©2017</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
